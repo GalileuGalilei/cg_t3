@@ -13,6 +13,16 @@ EventType OnRenderEvent::GetStaticType()
 	return EventType::RenderEvent;
 }
 
+EventType OnClickEvent::GetStaticType()
+{
+	return EventType::ClickEvent;
+}
+
+EventType OnKeyEvent::GetStaticType()
+{
+	return EventType::KeyEvent;
+}
+
 std::list<IRenderable*> IRenderable::renderList;
 void IRenderable::RenderAll(BaseEvent* baseEvent)
 {
@@ -28,11 +38,6 @@ void IRenderable::RenderAll(BaseEvent* baseEvent)
 			}
 		}
 	}
-}
-
-EventType OnClickEvent::GetStaticType()
-{
-	return EventType::ClickEvent;
 }
 
 std::list<IClickable*> IClickable::clickList;
@@ -56,3 +61,12 @@ void IClickable::MouseOverAll(BaseEvent* baseEvent)
 	}
 }
 
+std::list<IKeyable*> IKeyable::keyList;
+void IKeyable::KeyAll(BaseEvent* baseEvent)
+{
+	OnKeyEvent* args = (OnKeyEvent*)baseEvent;
+	for (auto i : IKeyable::keyList)
+	{
+		i->OnKey(args);
+	}
+}

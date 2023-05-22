@@ -10,7 +10,7 @@ enum EventType
 	ClickEvent,
 	MouseOverEvent,
 	RenderEvent,
-	ToolEvent,
+	KeyEvent,
 	Count
 };
 
@@ -27,8 +27,8 @@ protected:
 	BaseEvent() {};
 };
 
-using EvenFunc = void(*)(BaseEvent*);
-using EventList = std::list<EvenFunc>;
+using EventFunc = void(*)(BaseEvent*);
+using EventList = std::list<EventFunc>;
 using EventMap = EventList[EventType::Count];
 
 /// <summary>
@@ -66,14 +66,14 @@ public:
 		EventType type = T::GetStaticType();
 		EventList eventList = EventManager::eventMap[type];
 
-		for (EvenFunc f : eventList)
+		for (EventFunc f : eventList)
 		{
 			f(baseEvent);
 		}
 	}
 
 	template<typename T>
-	void AddListener(EvenFunc func)
+	void AddListener(EventFunc func)
 	{
 		if (!std::is_base_of<BaseEvent, T>())
 		{
@@ -87,7 +87,7 @@ public:
 	}
 
 	template<typename T>
-	void RemoveListener(EvenFunc func)
+	void RemoveListener(EventFunc func)
 	{
 		if (!std::is_base_of<BaseEvent, T>())
 		{
@@ -108,6 +108,8 @@ public:
 			printf("ERRO, o tipo passado não é compatível com BaseEvent\n\n");
 			return;
 		}
+
+
 		EventType type = T::GetStaticType();
 		EventList* eventList = &EventManager::eventMap[type];
 		eventList->clear();

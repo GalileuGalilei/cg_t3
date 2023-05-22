@@ -15,9 +15,17 @@
 #include <time.h>
 #include "Slider.h"
 
-void keyboard(int key) {}
+void keyboard(int key) 
+{
+    OnKeyEvent keyEvent = OnKeyEvent(key, 0);
+    EventManager::Instance()->InvokeEvent<OnKeyEvent>((BaseEvent*)&keyEvent);
+}
 
-void keyboardUp(int key) {}
+void keyboardUp(int key) 
+{
+    OnKeyEvent keyEvent = OnKeyEvent(key, 1);
+	EventManager::Instance()->InvokeEvent<OnKeyEvent>((BaseEvent*)&keyEvent);
+}
 
 void render()
 {
@@ -45,7 +53,8 @@ int main(void)
     EventManager::Instance()->AddListener<OnRenderEvent>(IRenderable::RenderAll);
     EventManager::Instance()->AddListener<OnClickEvent>(IClickable::ClickAll);
     EventManager::Instance()->AddListener<OnMouseOverEvent>(IClickable::MouseOverAll);
+    EventManager::Instance()->AddListener<OnKeyEvent>(IKeyable::KeyAll);
 
-    CV::init(&screenWidth, &screenHeight, "Canvas 2D");
+    CV::init(&screenWidth, &screenHeight, "CGT3 - Galaga");
     CV::run();
 }

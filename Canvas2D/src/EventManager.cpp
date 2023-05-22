@@ -6,8 +6,8 @@ EventType BaseEvent::GetStaticType()
 	return EventType::None;
 }
 
-using EvenFunc = void(*)(BaseEvent*);
-using EventList = std::list<EvenFunc>;
+using EventFunc = void(*)(BaseEvent*);
+using EventList = std::list<EventFunc>;
 using EventMap = EventList[EventType::Count];
 
 EventMap EventManager::eventMap;

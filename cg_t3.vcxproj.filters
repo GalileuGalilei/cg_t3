@@ -50,5 +50,8 @@
     <ClCompile Include="Canvas2D\src\Slider.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="Canvas2D\include\Botao.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

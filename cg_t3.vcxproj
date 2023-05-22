@@ -138,6 +138,7 @@
     <ClInclude Include="Canvas2D\include\Vector2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Canvas2D\include\Botao.cpp" />
     <ClCompile Include="Canvas2D\src\EventManager.cpp" />
     <ClCompile Include="Canvas2D\src\GameEvents.cpp" />
     <ClCompile Include="Canvas2D\src\gl_canvas2d.cpp" />
