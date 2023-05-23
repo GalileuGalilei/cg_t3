@@ -16,9 +16,10 @@ public:
 	~BezierCurve();
 	void SetControllPoint(Vector2 point, int i);
 
-	void Render(float t);
+	void Render();
 	void Translate(Vector2 translation);
+	void ConnectTailTo(BezierCurve* other);
 	bool IsColliding(CircleCollider other);
-	void GetBoudingBox(Vector2& min, Vector2& max);
+	Vector2 min, max;
 };
 

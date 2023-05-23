@@ -23,6 +23,13 @@ EventType OnKeyEvent::GetStaticType()
 	return EventType::KeyEvent;
 }
 
+clock_t OnClockEvent::oldClock = 0;
+
+EventType OnClockEvent::GetStaticType()
+{
+	return EventType::ClockEvent;
+}
+
 std::list<IRenderable*> IRenderable::renderList;
 void IRenderable::RenderAll(BaseEvent* baseEvent)
 {

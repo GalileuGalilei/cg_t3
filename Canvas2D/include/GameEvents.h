@@ -10,13 +10,40 @@ class OnRenderEvent : BaseEvent
 public:
 
 	static EventType GetStaticType();
-	OnRenderEvent() {};
+
+	float deltaTime;
 
 	EventType GetType() const override
 	{
 		return GetStaticType();
 	}
 
+	OnRenderEvent(float deltaTime)
+	{
+		this->deltaTime = deltaTime;
+	}
+};
+
+class OnClockEvent : BaseEvent
+{
+	static clock_t oldClock;
+
+public:
+	static EventType GetStaticType();
+
+	EventType GetType() const override
+	{
+		return GetStaticType();
+	}
+
+	float deltaTime;
+
+	OnClockEvent()
+	{
+		clock_t newClock = clock();
+		deltaTime = (float)(newClock - oldClock) / CLOCKS_PER_SEC;
+		oldClock = newClock;
+	}
 };
 
 class OnClickEvent : BaseEvent
@@ -88,26 +115,6 @@ public:
 	}
 };
 
-class OnClockEvent : BaseEvent
-{
-public:
-	static EventType GetStaticType();
-
-	EventType GetType() const override
-	{
-		return GetStaticType();
-	}
-
-	int time;
-	float deltaTime;
-
-	OnClockEvent()
-	{
-		time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-		
-	}
-};
-
 // Calback classes - essas classes podem ser herdadas para para implementar eventos genéricos como renderização, clique etc.
 
 class IRenderable
@@ -139,12 +146,12 @@ protected:
 
 	IRenderable()
 	{
-		renderList.remove(this);
+		renderList.push_back(this);
 	}
 
 	~IRenderable()
 	{
-		renderList.push_back(this);
+		renderList.remove(this);
 	}
 };
 

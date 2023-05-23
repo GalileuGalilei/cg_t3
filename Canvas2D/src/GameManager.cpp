@@ -2,10 +2,12 @@
 
 GameManager::GameManager()
 {
+	EventManager::Instance()->AddListener<OnClockEvent>(ClockEventListener);
 }
 
 GameManager::~GameManager()
 {
+
 }
 
 GameManager* GameManager::instance = nullptr;
@@ -20,11 +22,10 @@ GameManager* GameManager::Instance()
 	return instance;
 }
 
-void GameManager::Update()
+float GameManager::deltaTime = 0;
+
+void GameManager::ClockEventListener(BaseEvent* event)
 {
-	auto start = std::chrono::high_resolution_clock::now();
-	auto finish = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> elapsed = finish - start;
-	deltaTime = elapsed.count();
-	time += deltaTime;
+	OnClockEvent* args = (OnClockEvent*)event;
+	deltaTime = args->deltaTime;
 }

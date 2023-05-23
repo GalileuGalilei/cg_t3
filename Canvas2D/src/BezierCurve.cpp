@@ -13,6 +13,9 @@ Vector2 Lerp(Vector2 a, Vector2 b, float x)
 BezierCurve::BezierCurve()
 {
 	points.resize(4);
+	min = Vector2(FLT_MAX, FLT_MAX);
+	max = Vector2(-FLT_MAX, -FLT_MAX);
+	Render();
 }
 
 BezierCurve::~BezierCurve()
@@ -27,14 +30,23 @@ void BezierCurve::SetControllPoint(Vector2 point, int i)
 	points[i] = point;
 }
 
-void BezierCurve::Render(float t)
+void BezierCurve::ConnectTailTo(BezierCurve* other)
+{
+	Vector2 p2 = other->points[2];
+	Vector2 p3 = other->points[3];
+	Vector2 dir = p3 - p2;
+	this->points[0] = p3;
+	this->points[1] = p3 + dir;
+}
+
+void BezierCurve::Render()
 {
 	Vector2 p0 = points[0];
 	Vector2 p1 = points[1];
 	Vector2 p2 = points[2];
 	Vector2 p3 = points[3];
 	Vector2 oldP;
-	for (float i = 0; i < t; i += 0.01)
+	for (float i = 0; i <= 1.0f; i += 0.01)
 	{
 		Vector2 p01 = Lerp(p0, p1, i);
 		Vector2 p12 = Lerp(p1, p2, i);
@@ -49,26 +61,19 @@ void BezierCurve::Render(float t)
 			continue;
 		}
 
+		if (p0123.x < min.x)
+			min.x = p0123.x;
+		if (p0123.y < min.y)
+			min.y = p0123.y;
+		if (p0123.x > max.x)
+			max.x = p0123.x;
+		if (p0123.y > max.y)
+			max.y = p0123.y;
+
 		CV::color(255, 0, 0);
 		CV::line(oldP.x, oldP.y, p0123.x, p0123.y);
 		oldP = p0123;
-	}
-}
 
-void BezierCurve::GetBoudingBox(Vector2& min, Vector2& max)
-{
-	min = Vector2(FLT_MAX, FLT_MAX);
-	max = Vector2(-FLT_MAX, -FLT_MAX);
-	for (int i = 0; i < 4; i++)
-	{
-		if (points[i].x < min.x)
-			min.x = points[i].x;
-		if (points[i].y < min.y)
-			min.y = points[i].y;
-		if (points[i].x > max.x)
-			max.x = points[i].x;
-		if (points[i].y > max.y)
-			max.y = points[i].y;
 	}
 }
 

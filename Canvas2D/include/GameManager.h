@@ -1,7 +1,7 @@
 #pragma once
 
 #include "gl_canvas2d.h"
-#include "EventManager.h"
+#include "GameEvents.h"
 #include <chrono>
 
 class GameManager
@@ -10,11 +10,10 @@ private:
 	static GameManager* instance;
 	GameManager();
 	~GameManager();
+	static void ClockEventListener(BaseEvent* event);
 
 public:
 	static GameManager* Instance();
-	float deltaTime;
-	float time;
-
+	static float deltaTime;
 };
 

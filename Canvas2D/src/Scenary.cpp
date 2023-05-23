@@ -1,4 +1,25 @@
 #include "Scenary.h"
+#include "GameManager.h"
+#include <algorithm>
+
+void Scenary::UpdateCurves()
+{
+	int tam = leftCurve.size();
+	for (int i = 0; i < tam - 1; i++)
+	{
+		leftCurve[i] = leftCurve[i + 1];
+		rightCurve[i] = rightCurve[i + 1];
+	}
+
+	Vector2 max;
+	max = leftCurve[tam - 2]->max;
+	Vector2 newHeightRange = heightRange;
+	newHeightRange.x += max.y;
+	newHeightRange.y += max.y;
+
+	leftCurve[tam - 1] = GenerateRandomCurve(newHeightRange, leftRange);
+	rightCurve[tam - 1] = GenerateRandomCurve(newHeightRange, rightRange);
+}
 
 Scenary::Scenary(Vector2 leftRange, Vector2 rightRange, Vector2 heightRange)
 {
@@ -9,27 +30,25 @@ Scenary::Scenary(Vector2 leftRange, Vector2 rightRange, Vector2 heightRange)
 	leftCurve.resize(2);
 	rightCurve.resize(2);
 
-	leftCurve[0] = GenerateRandomCurve(true);
-	leftCurve[1] = GenerateRandomCurve(true);
-
-	rightCurve[0] = GenerateRandomCurve(false);
-	rightCurve[1] = GenerateRandomCurve(false);
+	leftCurve[1] = GenerateRandomCurve(heightRange, leftRange);
+	rightCurve[1] = GenerateRandomCurve(heightRange, rightRange);
+	UpdateCurves();
 }
 
 Scenary::~Scenary()
 {
 }
 
-void Scenary::Render(float t)
+void Scenary::OnRender(OnRenderEvent* args)
 {
 	for (int i = 0; i < leftCurve.size(); i++)
 	{
-		leftCurve[i]->Render(t);
-		rightCurve[i]->Render(t);
+		leftCurve[i]->Render();
+		rightCurve[i]->Render();
 	}
 
 	//move verticalmente as curvas
-	Vector2 translation(0, -speed);
+	Vector2 translation(0, -speed * GameManager::deltaTime);
 	Translate(translation);
 }
 
@@ -42,15 +61,20 @@ void Scenary::Translate(Vector2 translation)
 	}
 }
 
-BezierCurve* Scenary::GenerateRandomCurve(bool left)
+BezierCurve* Scenary::GenerateRandomCurve(Vector2 heightRange, Vector2 widthRange)
 {
 	BezierCurve* curve = new BezierCurve();
+	int heightOffset = (heightRange.y - heightRange.x) / 3;
+	int currentHeight = heightRange.x;
+	int widthOffset = (int)(widthRange.y - widthRange.x);
+	float randX = 0, randY = 0;
 	
 	for (int i = 0; i < 4; i++)
 	{
-		float randX = rand() % (int)((left ? leftRange.y : rightRange.y) + 1);
-		float randY = rand() % (int)(heightRange.y + 1);
+		randX = rand() % (int)(widthOffset) + widthRange.x;
+		randY = currentHeight;
 		curve->SetControllPoint(Vector2(randX, randY), i);
+		currentHeight += heightOffset;
 	}
 
 	return curve;

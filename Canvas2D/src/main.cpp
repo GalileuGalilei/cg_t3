@@ -13,6 +13,7 @@
 #include "EventManager.h"
 #include "GameEvents.h"
 #include <time.h>
+#include "GameManager.h"
 #include "Scenary.h"
 
 void keyboard(int key) 
@@ -29,7 +30,9 @@ void keyboardUp(int key)
 
 void render()
 {
-    OnRenderEvent renderEvent = OnRenderEvent();
+    OnClockEvent clockEvent = OnClockEvent();
+    EventManager::Instance()->InvokeEvent<OnClockEvent>((BaseEvent*)&clockEvent);
+    OnRenderEvent renderEvent = OnRenderEvent(0);
     EventManager::Instance()->InvokeEvent<OnRenderEvent>((BaseEvent*)&renderEvent);
 }
 
@@ -47,15 +50,17 @@ void mouse(int button, int state, int wheel, int direction, int x, int y)
 
 int main(void)
 {
-    int screenWidth = 920, screenHeight = 640;
+    int screenWidth = 920, screenHeight = 640, border = 80;
     srand(time(NULL));
+    Scenary* scenary = new Scenary(Vector2(0, border), Vector2(screenWidth - 80, screenWidth), Vector2(200, screenHeight-100));
+    GameManager::Instance();
 
     EventManager::Instance()->AddListener<OnRenderEvent>(IRenderable::RenderAll);
     EventManager::Instance()->AddListener<OnClickEvent>(IClickable::ClickAll);
     EventManager::Instance()->AddListener<OnMouseOverEvent>(IClickable::MouseOverAll);
     EventManager::Instance()->AddListener<OnKeyEvent>(IKeyable::KeyAll);
 
-    Scenary* scenary = new Scenary(Vector2(0, 0), Vector2(screenWidth, 0), Vector2(0, screenHeight));
+    
 
     CV::init(&screenWidth, &screenHeight, "CGT3 - Galaga");
     CV::run();
