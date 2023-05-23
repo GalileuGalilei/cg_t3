@@ -2,7 +2,7 @@
 // Canvas2D
 // Autor: Cesar Tadeu Pozzer
 //        04/2021
-// *********************************************************************/
+// *******************************************************************/
 #define _CRT_SECURE_NO_WARNINGS
 #include <GL/glut.h>
 #include <GL/freeglut_ext.h>
@@ -13,7 +13,7 @@
 #include "EventManager.h"
 #include "GameEvents.h"
 #include <time.h>
-#include "Slider.h"
+#include "Scenary.h"
 
 void keyboard(int key) 
 {
@@ -54,6 +54,8 @@ int main(void)
     EventManager::Instance()->AddListener<OnClickEvent>(IClickable::ClickAll);
     EventManager::Instance()->AddListener<OnMouseOverEvent>(IClickable::MouseOverAll);
     EventManager::Instance()->AddListener<OnKeyEvent>(IKeyable::KeyAll);
+
+    Scenary* scenary = new Scenary(Vector2(0, 0), Vector2(screenWidth, 0), Vector2(0, screenHeight));
 
     CV::init(&screenWidth, &screenHeight, "CGT3 - Galaga");
     CV::run();

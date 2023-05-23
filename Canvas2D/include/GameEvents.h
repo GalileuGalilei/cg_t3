@@ -3,6 +3,7 @@
 
 #include "EventManager.h"
 #include "Vector2.h"
+#include <chrono>
 
 class OnRenderEvent : BaseEvent
 {
@@ -84,6 +85,26 @@ public:
 	{
 		this->key = key;
 		this->state = state;
+	}
+};
+
+class OnClockEvent : BaseEvent
+{
+public:
+	static EventType GetStaticType();
+
+	EventType GetType() const override
+	{
+		return GetStaticType();
+	}
+
+	int time;
+	float deltaTime;
+
+	OnClockEvent()
+	{
+		time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+		
 	}
 };
 

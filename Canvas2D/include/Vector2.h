@@ -1,6 +1,6 @@
 #ifndef __VECTOR_2_H__
 #define __VECTOR_2_H__
-
+#include <math.h>
 
 class Vector2
 {
@@ -30,7 +30,6 @@ public:
 
        if(norm==0.0)
        {
-          printf("\n\nNormalize::Divisao por zero");
           x = 1;
           y = 1;
           return;
@@ -53,6 +52,10 @@ public:
 
    //Adicionem os demais overloads de operadores aqui.
 
+   static float distance(Vector2 a, Vector2 b)
+   {
+	   return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+   }
 
 };
 
