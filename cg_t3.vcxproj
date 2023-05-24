@@ -137,7 +137,7 @@
     <ClInclude Include="Canvas2D\include\gl_canvas2d.h" />
     <ClInclude Include="Canvas2D\include\Slider.h" />
     <ClInclude Include="Canvas2D\include\Vector2.h" />
-    <ClInclude Include="Canvas2D\include\CircleCollider.h" />
+    <ClInclude Include="Canvas2D\include\Colliders.h" />
     <ClInclude Include="Canvas2D\include\Scenary.h" />
     <ClInclude Include="Canvas2D\include\GameManager.h" />
   </ItemGroup>
@@ -149,9 +149,10 @@
     <ClCompile Include="Canvas2D\src\gl_canvas2d.cpp" />
     <ClCompile Include="Canvas2D\src\main.cpp" />
     <ClCompile Include="Canvas2D\src\Slider.cpp" />
-    <ClCompile Include="Canvas2D\src\CircleCollider.cpp" />
+    <ClCompile Include="Canvas2D\src\Colliders.cpp" />
     <ClCompile Include="Canvas2D\src\Scenary.cpp" />
     <ClCompile Include="Canvas2D\src\GameManager.cpp" />
+    <ClCompile Include="Canvas2D\src\Vector2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

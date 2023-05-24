@@ -11,14 +11,17 @@ void Scenary::UpdateCurves()
 		rightCurve[i] = rightCurve[i + 1];
 	}
 
-	Vector2 max;
-	max = leftCurve[tam - 2]->max;
+	RectCollider bounds = leftCurve[tam - 2]->GetBounds();
+	Vector2 max = bounds.size;
+
 	Vector2 newHeightRange = heightRange;
 	newHeightRange.x += max.y;
 	newHeightRange.y += max.y;
 
 	leftCurve[tam - 1] = GenerateRandomCurve(newHeightRange, leftRange);
 	rightCurve[tam - 1] = GenerateRandomCurve(newHeightRange, rightRange);
+	leftCurve[tam - 1]->ConnectTailTo(leftCurve[tam - 2]);
+	rightCurve[tam - 1]->ConnectTailTo(rightCurve[tam - 2]);
 }
 
 Scenary::Scenary(Vector2 leftRange, Vector2 rightRange, Vector2 heightRange)

@@ -6,6 +6,8 @@ class Vector2
 {
 public:
    float x, y;
+   static Vector2 minimun;
+   static Vector2 maximun;
 
    Vector2()
    {
@@ -50,6 +52,18 @@ public:
        return( aux );
    }
 
+   Vector2 operator * (const float escalar)
+   {
+	   Vector2 aux( x * escalar, y * escalar);
+	   return( aux );
+   }
+
+   Vector2 operator / (const float escalar)
+   {
+	   Vector2 aux(x / escalar, y / escalar);
+	   return( aux );
+   }
+
    //Adicionem os demais overloads de operadores aqui.
 
    static float distance(Vector2 a, Vector2 b)
@@ -57,6 +71,25 @@ public:
 	   return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
    }
 
+   static Vector2 max(Vector2 a, Vector2 b)
+   {
+       float x;
+       float y;
+       x = a.x > b.x ? a.x : b.x;
+       y = a.y > b.y ? a.y : b.y;
+
+       return Vector2(x, y);
+   }
+
+   static Vector2 min(Vector2 a, Vector2 b)
+   {
+       float x;
+       float y;
+       x = a.x < b.x ? a.x : b.x;
+       y = a.y < b.y ? a.y : b.y;
+
+       return Vector2(x, y);
+   }
 };
 
 #endif

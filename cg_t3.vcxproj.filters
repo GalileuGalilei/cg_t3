@@ -36,7 +36,7 @@
     <ClInclude Include="Canvas2D\include\BezierCurve.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="Canvas2D\include\CircleCollider.h">
+    <ClInclude Include="Canvas2D\include\Colliders.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
     <ClInclude Include="Canvas2D\include\Scenary.h">
@@ -68,13 +68,16 @@
     <ClCompile Include="Canvas2D\src\BezierCurve.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="Canvas2D\src\CircleCollider.cpp">
+    <ClCompile Include="Canvas2D\src\Colliders.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="Canvas2D\src\Scenary.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="Canvas2D\src\GameManager.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas2D\src\Vector2.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
