@@ -80,6 +80,18 @@ void CV::line( float x1, float y1, float x2, float y2 )
    glEnd();
 }
 
+void CV::line( float vx[], float vy[], int elems )
+{
+   int cont;
+   glBegin(GL_LINES);
+	  for(cont=0; cont<elems; cont+=2)
+	  {
+		 glVertex2d(vx[cont], vy[cont]);
+		 glVertex2d(vx[cont+1], vy[cont+1]);
+	  }
+   glEnd();
+}
+
 void CV::rect( float x1, float y1, float x2, float y2 )
 {
    glBegin(GL_LINE_LOOP);
