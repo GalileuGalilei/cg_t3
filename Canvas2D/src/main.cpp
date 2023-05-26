@@ -34,6 +34,7 @@ void render()
     EventManager::Instance()->InvokeEvent<OnClockEvent>((BaseEvent*)&clockEvent);
     OnRenderEvent renderEvent = OnRenderEvent(0);
     EventManager::Instance()->InvokeEvent<OnRenderEvent>((BaseEvent*)&renderEvent);
+    CV::line
 }
 
 void mouse(int button, int state, int wheel, int direction, int x, int y)

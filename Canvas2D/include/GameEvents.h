@@ -143,7 +143,7 @@ private:
 	virtual void OnRender(OnRenderEvent* args) = 0;
 
 protected:
-
+	
 	IRenderable()
 	{
 		renderList.push_back(this);
