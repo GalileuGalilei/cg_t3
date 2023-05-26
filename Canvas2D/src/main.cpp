@@ -52,7 +52,7 @@ int main(void)
 {
     int screenWidth = 920, screenHeight = 640, border = 80;
     srand(time(NULL));
-    Scenary* scenary = new Scenary(Vector2(0, border), Vector2(screenWidth - 80, screenWidth), Vector2(200, screenHeight-100));
+    Scenary* scenary = new Scenary(Vector2(0, border), Vector2(screenWidth - border, screenWidth), Vector2(200, screenHeight-100));
     GameManager::Instance();
 
     EventManager::Instance()->AddListener<OnRenderEvent>(IRenderable::RenderAll);

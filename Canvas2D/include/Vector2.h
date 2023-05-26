@@ -40,6 +40,21 @@ public:
        y /= norm;
    }
 
+   float module()
+   {
+       return sqrt(x * x + y * y);
+   }
+
+   Vector2 CalculateLeftPerpendicular()
+   {
+       return Vector2(-y, x);
+   }
+
+   Vector2 CalculateRightPerpendicular()
+   {
+       return Vector2(y, -x);
+   }
+
    Vector2 operator - (const Vector2& v)
    {
         Vector2 aux( x - v.x, y - v.y);
@@ -50,6 +65,20 @@ public:
    {
        Vector2 aux( x + v.x, y + v.y);
        return( aux );
+   }
+
+   Vector2& operator += (const Vector2& v)
+   {
+       this->x += v.x;
+       this->y += v.y;
+       return *this;
+   }
+
+   Vector2& operator -= (const Vector2& v)
+   {
+       this->x -= v.x;
+       this->y -= v.y;
+       return *this;
    }
 
    Vector2 operator * (const float escalar)

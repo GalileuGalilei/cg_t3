@@ -12,29 +12,33 @@ void Scenary::UpdateCurves()
 	}
 
 	RectCollider bounds = leftCurve[tam - 2]->GetBounds();
-	Vector2 max = bounds.size;
+	Vector2 start = bounds.size + bounds.position;
+	leftCurve[tam - 1] = GenerateRandomCurve(start, direction, range);
 
-	Vector2 newHeightRange = heightRange;
-	newHeightRange.x += max.y;
-	newHeightRange.y += max.y;
+	bounds = rightCurve[tam - 2]->GetBounds();
+	start = bounds.size + bounds.position;
+	rightCurve[tam - 1] = GenerateRandomCurve(start, direction, range);
 
-	leftCurve[tam - 1] = GenerateRandomCurve(newHeightRange, leftRange);
-	rightCurve[tam - 1] = GenerateRandomCurve(newHeightRange, rightRange);
 	leftCurve[tam - 1]->ConnectTailTo(leftCurve[tam - 2]);
 	rightCurve[tam - 1]->ConnectTailTo(rightCurve[tam - 2]);
 }
 
 Scenary::Scenary(Vector2 leftRange, Vector2 rightRange, Vector2 heightRange)
 {
-	this->leftRange = leftRange;
-	this->rightRange = rightRange;
-	this->heightRange = heightRange;
-
 	leftCurve.resize(2);
 	rightCurve.resize(2);
+	
+	Vector2 leftStart = Vector2((leftRange.y + leftRange.x) / 2, heightRange.x);
+	Vector2 rightStart = Vector2((rightRange.y + rightRange.x) / 2, heightRange.x);
 
-	leftCurve[1] = GenerateRandomCurve(heightRange, leftRange);
-	rightCurve[1] = GenerateRandomCurve(heightRange, rightRange);
+	this->leftRange = leftRange;
+	this->rightRange = rightRange;
+
+	direction = Vector2(0, heightRange.y - heightRange.x);
+	range = Vector2((leftRange.y - leftRange.x) / 2, (leftRange.y - leftRange.x) / 2);
+
+	leftCurve[1] = GenerateRandomCurve(leftStart, direction, range);
+	rightCurve[1] = GenerateRandomCurve(rightStart, direction, range);
 	UpdateCurves();
 }
 
@@ -64,20 +68,26 @@ void Scenary::Translate(Vector2 translation)
 	}
 }
 
-BezierCurve* Scenary::GenerateRandomCurve(Vector2 heightRange, Vector2 widthRange)
+BezierCurve* Scenary::GenerateRandomCurve(Vector2 start, Vector2 direction, Vector2 range)
 {
 	BezierCurve* curve = new BezierCurve();
-	int heightOffset = (heightRange.y - heightRange.x) / 3;
-	int currentHeight = heightRange.x;
-	int widthOffset = (int)(widthRange.y - widthRange.x);
-	float randX = 0, randY = 0;
+	float jump = direction.module() / 3;
+	Vector2 perpendicular = direction.CalculateLeftPerpendicular();
+	Vector2 controllPoint = start;
+	Vector2 lastPerpendicular = Vector2(0, 0);
+
+	perpendicular.normalize();
+	direction.normalize();
 	
 	for (int i = 0; i < 4; i++)
 	{
-		randX = rand() % (int)(widthOffset) + widthRange.x;
-		randY = currentHeight;
-		curve->SetControllPoint(Vector2(randX, randY), i);
-		currentHeight += heightOffset;
+		curve->SetControllPoint(controllPoint, i);
+		controllPoint -= lastPerpendicular;
+
+		float r = (rand() % (int)range.x) * 2 - range.y;
+		lastPerpendicular = perpendicular * r;
+		controllPoint += direction * jump;
+		controllPoint += lastPerpendicular;
 	}
 
 	return curve;
