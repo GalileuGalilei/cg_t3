@@ -1,5 +1,5 @@
-#ifndef CIRCLE_COLLIDER
-#define CIRCLE_COLLIDER
+#ifndef COLLIDERS
+#define COLLIDERS
 
 #include "Vector2.h"
 
@@ -27,8 +27,8 @@ public:
 
     RectCollider(Vector2 position, Vector2 size);
 
-    bool DoesIntersects(Vector2 point);
+    bool IsColliding(Vector2 point);
 };
 
-#endif // !CIRCLE_COLLIDER
+#endif // !COLLIDERS
 

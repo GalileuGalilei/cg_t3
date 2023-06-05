@@ -2,77 +2,77 @@
 #include "GameManager.h"
 #include <algorithm>
 
-void Scenary::UpdateCurves()
+void Scenary::UpdateCurve()
 {
-	int tam = leftCurve.size();
+	int tam = curve.size();
+	delete curve[0];
 	for (int i = 0; i < tam - 1; i++)
 	{
-		leftCurve[i] = leftCurve[i + 1];
-		rightCurve[i] = rightCurve[i + 1];
+		curve[i] = curve[i + 1];
 	}
 
-	RectCollider bounds = leftCurve[tam - 2]->GetBounds();
-	Vector2 start = bounds.size + bounds.position;
-	leftCurve[tam - 1] = GenerateRandomCurve(start, direction, range);
-
-	bounds = rightCurve[tam - 2]->GetBounds();
-	start = bounds.size + bounds.position;
-	rightCurve[tam - 1] = GenerateRandomCurve(start, direction, range);
-
-	leftCurve[tam - 1]->ConnectTailTo(leftCurve[tam - 2]);
-	rightCurve[tam - 1]->ConnectTailTo(rightCurve[tam - 2]);
+	RectCollider bounds = curve[tam - 2]->GetBounds();
+	Vector2 start = Vector2(range * 0.5 + border, screenSize.y);
+	curve[tam - 1] = GenerateRandomCurve(start, direction, range);
+	curve[tam - 1]->ConnectTailTo(curve[tam - 2]);
 }
 
-Scenary::Scenary(Vector2 leftRange, Vector2 rightRange, Vector2 heightRange)
+Scenary::Scenary(Vector2 screenSize, float range, float border)
 {
-	leftCurve.resize(2);
-	rightCurve.resize(2);
-	
-	Vector2 leftStart = Vector2((leftRange.y + leftRange.x) / 2, heightRange.x);
-	Vector2 rightStart = Vector2((rightRange.y + rightRange.x) / 2, heightRange.x);
+	this->screenSize = screenSize;
+	this->range = range;
+	this->border = border;
 
-	this->leftRange = leftRange;
-	this->rightRange = rightRange;
+	curve.resize(2);
+	Vector2 start = Vector2(range / 2, 0 + border);
 
-	direction = Vector2(0, heightRange.y - heightRange.x);
-	range = Vector2((leftRange.y - leftRange.x) / 2, (leftRange.y - leftRange.x) / 2);
-
-	leftCurve[1] = GenerateRandomCurve(leftStart, direction, range);
-	rightCurve[1] = GenerateRandomCurve(rightStart, direction, range);
-	UpdateCurves();
+	direction = Vector2(0, screenSize. y / 2);
+	curve[1] = GenerateRandomCurve(start, direction, range);
+	UpdateCurve();
 }
 
 Scenary::~Scenary()
 {
+	for (int i = 0; i < curve.size(); i++)
+	{
+		delete curve[i];
+	}
 }
 
 void Scenary::OnRender(OnRenderEvent* args)
 {
-	for (int i = 0; i < leftCurve.size(); i++)
+	for (int i = 0; i < curve.size(); i++)
 	{
-		leftCurve[i]->Render();
-		rightCurve[i]->Render();
+		curve[i]->Render();
+		CV::translate(screenSize.x - range - border, 0);
+		curve[i]->Render();
+		CV::translate(0, 0);
 	}
 
 	//move verticalmente as curvas
 	Vector2 translation(0, -speed * GameManager::deltaTime);
 	Translate(translation);
+	RectCollider bounds = curve[curve.size() - 1]->GetBounds();
+	if (bounds.position.y + bounds.size.y < screenSize.y)
+	{
+		UpdateCurve();
+	}
+		
 }
 
 void Scenary::Translate(Vector2 translation)
 {
-	for (int i = 0; i < leftCurve.size(); i++)
+	for (int i = 0; i < curve.size(); i++)
 	{
-		leftCurve[i]->Translate(translation);
-		rightCurve[i]->Translate(translation);
+		curve[i]->Translate(translation);
 	}
 }
 
-BezierCurve* Scenary::GenerateRandomCurve(Vector2 start, Vector2 direction, Vector2 range)
+BezierCurve* Scenary::GenerateRandomCurve(Vector2 start, Vector2 direction, float range)
 {
 	BezierCurve* curve = new BezierCurve();
-	float jump = direction.module() / 3;
-	Vector2 perpendicular = direction.CalculateLeftPerpendicular();
+	float jump = direction.lenght() / 3;
+	Vector2 perpendicular = direction.GetLeft();
 	Vector2 controllPoint = start;
 	Vector2 lastPerpendicular = Vector2(0, 0);
 
@@ -84,8 +84,8 @@ BezierCurve* Scenary::GenerateRandomCurve(Vector2 start, Vector2 direction, Vect
 		curve->SetControllPoint(controllPoint, i);
 		controllPoint -= lastPerpendicular;
 
-		float r = (rand() % (int)range.x) * 2 - range.y;
-		lastPerpendicular = perpendicular * r;
+		float r = ((rand() % 100) / 100.0) * range * 2 - range;
+		lastPerpendicular = perpendicular * r * 0.5;
 		controllPoint += direction * jump;
 		controllPoint += lastPerpendicular;
 	}

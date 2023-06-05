@@ -6,54 +6,28 @@ class Vector2
 {
 public:
    float x, y;
-   static Vector2 minimun;
-   static Vector2 maximun;
+   static Vector2 MinVector;
+   static Vector2 MaxVector;
 
-   Vector2()
-   {
-      x = y = 0;
-   }
+   Vector2();
 
-   Vector2(float _x, float _y)
-   {
-       x = _x;
-       y = _y;
-   }
+   Vector2(float _x, float _y);
 
-   void set(float _x, float _y)
-   {
-       x = _x;
-       y = _y;
-   }
+   void set(float _x, float _y);
 
-   void normalize()
-   {
-       float norm = (float)sqrt(x*x + y*y);
+   void normalize();
 
-       if(norm==0.0)
-       {
-          x = 1;
-          y = 1;
-          return;
-       }
-       x /= norm;
-       y /= norm;
-   }
+   float lenght();
 
-   float module()
-   {
-       return sqrt(x * x + y * y);
-   }
+   /// <summary>
+   /// vetor perpendicular à esquerda
+   /// </summary>
+   Vector2 GetLeft();
 
-   Vector2 CalculateLeftPerpendicular()
-   {
-       return Vector2(-y, x);
-   }
-
-   Vector2 CalculateRightPerpendicular()
-   {
-       return Vector2(y, -x);
-   }
+   /// <summary>
+   /// vetor perpendicular à direita
+   /// </summary>
+   Vector2 GetRight();
 
    Vector2 operator - (const Vector2& v)
    {
@@ -92,8 +66,6 @@ public:
 	   Vector2 aux(x / escalar, y / escalar);
 	   return( aux );
    }
-
-   //Adicionem os demais overloads de operadores aqui.
 
    static float distance(Vector2 a, Vector2 b)
    {

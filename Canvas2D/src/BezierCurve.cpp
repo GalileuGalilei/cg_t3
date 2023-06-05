@@ -53,8 +53,8 @@ Vector2 BezierCurve::CalculateCurvePoint(float t)
 
 void BezierCurve::CalculateBoudingBox()
 {
-	Vector2 max = Vector2::minimun;
-	Vector2 min = Vector2::maximun;
+	Vector2 max = Vector2::MinVector;
+	Vector2 min = Vector2::MaxVector;
 	for (float i = 0; i <= 1.0f; i += 0.01)
 	{
 		Vector2 aux = CalculateCurvePoint(i);

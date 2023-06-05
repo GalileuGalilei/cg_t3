@@ -34,7 +34,6 @@ void render()
     EventManager::Instance()->InvokeEvent<OnClockEvent>((BaseEvent*)&clockEvent);
     OnRenderEvent renderEvent = OnRenderEvent(0);
     EventManager::Instance()->InvokeEvent<OnRenderEvent>((BaseEvent*)&renderEvent);
-    CV::line
 }
 
 void mouse(int button, int state, int wheel, int direction, int x, int y)
@@ -51,17 +50,9 @@ void mouse(int button, int state, int wheel, int direction, int x, int y)
 
 int main(void)
 {
-    int screenWidth = 920, screenHeight = 640, border = 80;
-    srand(time(NULL));
-    Scenary* scenary = new Scenary(Vector2(0, border), Vector2(screenWidth - border, screenWidth), Vector2(200, screenHeight-100));
-    GameManager::Instance();
-
-    EventManager::Instance()->AddListener<OnRenderEvent>(IRenderable::RenderAll);
-    EventManager::Instance()->AddListener<OnClickEvent>(IClickable::ClickAll);
-    EventManager::Instance()->AddListener<OnMouseOverEvent>(IClickable::MouseOverAll);
-    EventManager::Instance()->AddListener<OnKeyEvent>(IKeyable::KeyAll);
-
-    
+    GameManager::Instance(); //garante a primeira instancia do singleton
+    int screenWidth = 920, screenHeight = 640, border = 20;
+    Scenary* scenary = new Scenary(Vector2(screenWidth, screenHeight), 100, border);
 
     CV::init(&screenWidth, &screenHeight, "CGT3 - Galaga");
     CV::run();

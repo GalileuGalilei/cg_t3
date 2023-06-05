@@ -50,7 +50,7 @@ RectCollider::RectCollider(Vector2 position, Vector2 size)
     center = position + size / 2;
 }
 
-bool RectCollider::DoesIntersects(Vector2 point)
+bool RectCollider::IsColliding(Vector2 point)
 {
     Vector2 min = position;
     Vector2 max = position + size;
