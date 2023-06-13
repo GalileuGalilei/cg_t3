@@ -1,4 +1,6 @@
 #include "GameEvents.h"
+#include "gl_canvas2d.h"
+#include <string>
 
 int OnMouseOverEvent::oldX = 0;
 int OnMouseOverEvent::oldY = 0;
@@ -23,11 +25,11 @@ EventType OnKeyEvent::GetStaticType()
 	return EventType::KeyEvent;
 }
 
-clock_t OnClockEvent::oldClock = 0;
+clock_t OnUpdateEvent::oldClock = 0;
 
-EventType OnClockEvent::GetStaticType()
+EventType OnUpdateEvent::GetStaticType()
 {
-	return EventType::ClockEvent;
+	return EventType::UpdateEvent;
 }
 
 std::list<IRenderable*> IRenderable::renderList;
@@ -76,4 +78,21 @@ void IKeyable::KeyAll(BaseEvent* baseEvent)
 	{
 		i->OnKey(args);
 	}
+}
+
+std::list<IUpdatable*> IUpdatable::updateList;
+void IUpdatable::UpdateAll(BaseEvent* baseEvent)
+{
+	OnUpdateEvent* args = (OnUpdateEvent*)baseEvent;
+	for (auto i : IUpdatable::updateList)
+	{
+		i->OnUpdate(args);
+
+	}
+
+	CV::color(1, 1, 1);
+	std::string fps = "FPS: " + std::to_string((long)(1.0 / (double)args->deltaTime));
+	CV::text(500, 10, fps.c_str());
+	std::string objects = "Objects: " + std::to_string((long)updateList.size());
+	CV::text(500, 30, objects.c_str());
 }

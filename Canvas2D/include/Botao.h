@@ -6,7 +6,7 @@
 #include "GameEvents.h"
 #include "gl_canvas2d.h"
 
-class Button : public IRenderable, IClickable
+class Button : IRenderable, IClickable
 {
 private:
 	std::function<void()> callback;
@@ -14,7 +14,7 @@ private:
 protected:
 
 	const float offset = 0.2f;
-	char label[100];
+	char label[30];
 	bool isMouseOver = false;
 	Color color;
 	Color normalColor;
@@ -30,11 +30,6 @@ protected:
 	void OnClick(OnClickEvent* args) override;
 
 	void OnMouseOver(OnMouseOverEvent* args) override;
-
-	GameLayer GetLayer() override
-	{
-		return GameLayer::UI;
-	}
 
 	bool CheckBounds(int x, int y);
 };

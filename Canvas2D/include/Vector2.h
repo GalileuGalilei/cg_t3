@@ -8,6 +8,7 @@ public:
    float x, y;
    static Vector2 MinVector;
    static Vector2 MaxVector;
+   static Vector2 Random();
 
    Vector2();
 
@@ -17,7 +18,13 @@ public:
 
    void normalize();
 
-   float lenght();
+   void rotate(float angle);
+
+   float dot(Vector2 other);
+
+   float length();
+
+   float lengthSqr();
 
    /// <summary>
    /// vetor perpendicular à esquerda
@@ -28,6 +35,12 @@ public:
    /// vetor perpendicular à direita
    /// </summary>
    Vector2 GetRight();
+
+   Vector2(const Vector2& v)
+   {
+	   this->x = v.x;
+	   this->y = v.y;
+   }
 
    Vector2 operator - (const Vector2& v)
    {
@@ -53,6 +66,11 @@ public:
        this->x -= v.x;
        this->y -= v.y;
        return *this;
+   }
+
+   bool operator == (const Vector2& v)
+   {
+	   return (this->x == v.x && this->y == v.y);
    }
 
    Vector2 operator * (const float escalar)

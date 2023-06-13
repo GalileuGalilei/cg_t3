@@ -11,7 +11,8 @@ enum EventType
 	MouseOverEvent,
 	RenderEvent,
 	KeyEvent,
-	ClockEvent,
+	UpdateEvent,
+	CollisionEvent,
 	Count
 };
 

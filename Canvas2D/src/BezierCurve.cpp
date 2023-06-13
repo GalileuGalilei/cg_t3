@@ -11,7 +11,7 @@ Vector2 Lerp(Vector2 a, Vector2 b, float x)
 	return Vector2(Lerp(a.x, b.x, x), Lerp(a.y, b.y, x));
 }
 
-BezierCurve::BezierCurve()
+BezierCurve::BezierCurve() : boundingBox(0, 0, 0, 0)
 {
 	points.resize(4);
 }
@@ -62,17 +62,20 @@ void BezierCurve::CalculateBoudingBox()
 		min = Vector2::min(min, aux);
 	}
 
-	BoundingBox = new RectCollider(min, max - min);
+	boundingBox.position = min;
+	boundingBox.size = max - min;
+	boundingBox.center = boundingBox.position + boundingBox.size / 2;
+
+	isBoundsCalculated = true;
 }
 
-RectCollider BezierCurve::GetBounds()
+Bounds BezierCurve::GetBounds()
 {
-	if (BoundingBox == nullptr)
+	if (!isBoundsCalculated)
 	{
 		CalculateBoudingBox();
 	}
-
-	return *BoundingBox;
+	return boundingBox;
 }
 
 void BezierCurve::Render()
@@ -99,22 +102,15 @@ void BezierCurve::Translate(Vector2 translation)
 	for (int i = 0; i < 4; i++)
 	{
 		points[i] = points[i] + translation;
-		if (BoundingBox != nullptr)
-		{
-			BoundingBox->center = BoundingBox->center + translation;
-			BoundingBox->position = BoundingBox->position + translation;
-		}
 	}
-}
 
-bool BezierCurve::IsColliding(CircleCollider other)
-{
-	for (float i = 0; i < 1; i += 0.01)
+	if (!isBoundsCalculated)
 	{
-		Vector2 p0123 = CalculateCurvePoint(i);
-		if (other.IsColliding(p0123))
-			return true;
+		CalculateBoudingBox();
 	}
-	return false;
-}
 
+
+	boundingBox.center = boundingBox.center + translation;
+	boundingBox.position = boundingBox.position + translation;
+	
+}

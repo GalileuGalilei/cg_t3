@@ -3,18 +3,15 @@
 // Autor: Cesar Tadeu Pozzer
 //        04/2021
 // *******************************************************************/
-#define _CRT_SECURE_NO_WARNINGS
 #include <GL/glut.h>
 #include <GL/freeglut_ext.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "gl_canvas2d.h"
 #include "EventManager.h"
-#include "GameEvents.h"
-#include <time.h>
 #include "GameManager.h"
-#include "Scenary.h"
 
 void keyboard(int key) 
 {
@@ -30,10 +27,17 @@ void keyboardUp(int key)
 
 void render()
 {
-    OnClockEvent clockEvent = OnClockEvent();
-    EventManager::Instance()->InvokeEvent<OnClockEvent>((BaseEvent*)&clockEvent);
+    CV::color(0, 0, 0);
+    CV::rectFill(0, 0, 620, 620);
+
+    OnUpdateEvent updateEvent = OnUpdateEvent();
+    EventManager::Instance()->InvokeEvent<OnUpdateEvent>((BaseEvent*)&updateEvent);
+
     OnRenderEvent renderEvent = OnRenderEvent(0);
     EventManager::Instance()->InvokeEvent<OnRenderEvent>((BaseEvent*)&renderEvent);
+
+    OnCollisionEvent collisionEvent = OnCollisionEvent(nullptr, Vector2(0, 0));
+    EventManager::Instance()->InvokeEvent<OnCollisionEvent>((BaseEvent*)&collisionEvent);
 }
 
 void mouse(int button, int state, int wheel, int direction, int x, int y)
@@ -50,9 +54,8 @@ void mouse(int button, int state, int wheel, int direction, int x, int y)
 
 int main(void)
 {
-    GameManager::Instance(); //garante a primeira instancia do singleton
-    int screenWidth = 920, screenHeight = 640, border = 20;
-    Scenary* scenary = new Scenary(Vector2(screenWidth, screenHeight), 100, border);
+    int screenWidth = 620, screenHeight = 620;
+    GameManager::Instance()->SetScreen(Vector2(screenWidth, screenHeight));
 
     CV::init(&screenWidth, &screenHeight, "CGT3 - Galaga");
     CV::run();

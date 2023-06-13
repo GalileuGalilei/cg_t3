@@ -6,6 +6,8 @@ Button::Button(Vector2 position, Vector2 size, Color color, const char label[], 
 	this->position = position;
 	this->size = size;
 	this->color = color;
+	pressedColor = color;
+	normalColor = color;
 	this->callback = callback;
 	strcpy_s(this->label, label);
 }

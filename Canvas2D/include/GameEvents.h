@@ -24,7 +24,7 @@ public:
 	}
 };
 
-class OnClockEvent : BaseEvent
+class OnUpdateEvent : BaseEvent
 {
 	static clock_t oldClock;
 
@@ -38,7 +38,7 @@ public:
 
 	float deltaTime;
 
-	OnClockEvent()
+	OnUpdateEvent()
 	{
 		clock_t newClock = clock();
 		deltaTime = (float)(newClock - oldClock) / CLOCKS_PER_SEC;
@@ -195,6 +195,26 @@ protected:
 	~IKeyable()
 	{
 		keyList.remove(this);
+	}
+};
+
+class IUpdatable
+{
+private:
+	static std::list<IUpdatable*> updateList;
+	virtual void OnUpdate(OnUpdateEvent* args) = 0;
+
+public:
+	static void UpdateAll(BaseEvent* baseEvent);
+
+protected:
+	IUpdatable()
+	{
+		updateList.push_back(this);
+	}
+	~IUpdatable()
+	{
+		updateList.remove(this);
 	}
 };
 

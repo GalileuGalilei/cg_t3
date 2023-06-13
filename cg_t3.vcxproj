@@ -31,6 +31,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>true</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -130,29 +131,51 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Canvas2D\include\Bounds.h" />
+    <ClInclude Include="Canvas2D\include\Bullet.h" />
     <ClInclude Include="Canvas2D\include\BezierCurve.h" />
     <ClInclude Include="Canvas2D\include\Botao.h" />
+    <ClInclude Include="Canvas2D\include\ConcavePolygon.h" />
     <ClInclude Include="Canvas2D\include\EventManager.h" />
     <ClInclude Include="Canvas2D\include\GameEvents.h" />
     <ClInclude Include="Canvas2D\include\gl_canvas2d.h" />
+    <ClInclude Include="Canvas2D\include\PolygonShape.h" />
     <ClInclude Include="Canvas2D\include\Slider.h" />
     <ClInclude Include="Canvas2D\include\Vector2.h" />
     <ClInclude Include="Canvas2D\include\Colliders.h" />
     <ClInclude Include="Canvas2D\include\Scenary.h" />
     <ClInclude Include="Canvas2D\include\GameManager.h" />
+    <ClInclude Include="Canvas2D\include\Player.h" />
+    <ClInclude Include="Canvas2D\include\MovableObject.h" />
+    <ClInclude Include="Canvas2D\include\Figure.h" />
+    <ClInclude Include="Canvas2D\include\Enemy.h" />
+    <ClInclude Include="Canvas2D\include\LifeBar.h" />
+    <ClInclude Include="Canvas2D\include\Scenes.h" />
+    <ClInclude Include="Canvas2D\include\PowerUp.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Canvas2D\include\Botao.cpp" />
+    <ClCompile Include="Canvas2D\src\Bounds.cpp" />
+    <ClCompile Include="Canvas2D\src\Bullet.cpp" />
+    <ClCompile Include="Canvas2D\src\Botao.cpp" />
     <ClCompile Include="Canvas2D\src\BezierCurve.cpp" />
+    <ClCompile Include="Canvas2D\src\ConcavePolygon.cpp" />
     <ClCompile Include="Canvas2D\src\EventManager.cpp" />
     <ClCompile Include="Canvas2D\src\GameEvents.cpp" />
     <ClCompile Include="Canvas2D\src\gl_canvas2d.cpp" />
     <ClCompile Include="Canvas2D\src\main.cpp" />
+    <ClCompile Include="Canvas2D\src\PolygonShape.cpp" />
     <ClCompile Include="Canvas2D\src\Slider.cpp" />
     <ClCompile Include="Canvas2D\src\Colliders.cpp" />
     <ClCompile Include="Canvas2D\src\Scenary.cpp" />
     <ClCompile Include="Canvas2D\src\GameManager.cpp" />
     <ClCompile Include="Canvas2D\src\Vector2.cpp" />
+    <ClCompile Include="Canvas2D\src\Player.cpp" />
+    <ClCompile Include="Canvas2D\src\MovableObject.cpp" />
+    <ClCompile Include="Canvas2D\src\Figure.cpp" />
+    <ClCompile Include="Canvas2D\src\Enemy.cpp" />
+    <ClCompile Include="Canvas2D\src\LifeBar.cpp" />
+    <ClCompile Include="Canvas2D\src\Scenes.cpp" />
+    <ClCompile Include="Canvas2D\src\PowerUp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
